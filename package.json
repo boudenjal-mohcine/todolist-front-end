@@ -21,6 +21,8 @@
     "react-router-dom": "^6.10.0",
     "react-scripts": "5.0.1",
     "react-validator": "^0.1.0",
+    "redux": "^4.2.1",
+    "redux-thunk": "^2.4.2",
     "typescript": "^4.9.5",
     "web-vitals": "^2.1.4"
   },
@@ -48,6 +50,7 @@
   },
   "devDependencies": {
     "@vitejs/plugin-react-refresh": "^1.3.6",
+    "redux-devtools-extension": "^2.13.9",
     "vite": "^4.2.1"
   }
 }
