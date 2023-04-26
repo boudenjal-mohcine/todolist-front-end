@@ -3,6 +3,7 @@ import {
     REGISTER_FAIL,
     LOGIN_SUCCESS,
     LOGIN_FAIL,
+    LOGOUT,
   } from "../actions/types";
   
   let user = null;
@@ -44,6 +45,12 @@ import {
           isLoggedIn: false,
           user: null,
         };
+        case LOGOUT:
+          return {
+            ...state,
+            isLoggedIn: false,
+            user: null,
+          };
       default:
         return state;
     }

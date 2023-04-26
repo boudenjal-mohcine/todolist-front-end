@@ -1,4 +1,4 @@
-import { FunctionComponent, useState, useRef, FormEvent, ChangeEvent, MouseEventHandler } from "react";
+import { FunctionComponent, useState, useRef, FormEvent, ChangeEvent, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Navigate, useNavigate, Link } from "react-router-dom";
 import Social from "./SocialComponent";
@@ -20,7 +20,6 @@ const required = (value: any) => {
 const Login: FunctionComponent<LoginProps> = (props) => {
   let navigate = useNavigate();
 
-  console.log(localStorage.getItem("user"));
    
   const form = useRef<HTMLFormElement>(null);
   const checkBtn = useRef<HTMLButtonElement>(null);
@@ -32,11 +31,14 @@ const Login: FunctionComponent<LoginProps> = (props) => {
   
   const { message } = useSelector((state: any) => state.message);
 
+  
   //if state of user is login redirect them to home page
+useEffect(()=>{
   if (isLoggedIn) {
-    return <Navigate to="/home" />;
+    return navigate("/home");
   }
-
+})
+  
 
   const dispatch = useDispatch();
 
@@ -52,14 +54,13 @@ const Login: FunctionComponent<LoginProps> = (props) => {
 
   const handleLogin = (e:FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    navigate("/home");
 
     login(email,password)(dispatch).then(()=>{
       navigate("/home");
       window.location.reload();
 
     }).catch(()=>{
-      navigate("/signup");
+      navigate("/login");
     })
    
   };

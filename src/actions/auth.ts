@@ -4,6 +4,7 @@ import {
   LOGIN_SUCCESS,
   LOGIN_FAIL,
   SET_MESSAGE,
+  LOGOUT
 } from "./types";
 
 import AuthService from "../api/auth.service";
@@ -78,4 +79,13 @@ export const login =
         return Promise.reject();
       }
     );
+  };
+
+  export const logout = () => (dispatch: (arg0: { type: any; }) => void) => {
+  
+    dispatch({
+      type: LOGOUT,
+    });
+
+
   };

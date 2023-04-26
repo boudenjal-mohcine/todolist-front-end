@@ -5,6 +5,8 @@ export const LOGIN_FAIL = "LOGIN_FAIL";
 
 export const SET_MESSAGE = "SET_MESSAGE";
 export const CLEAR_MESSAGE = "CLEAR_MESSAGE";
+export const LOGOUT = "LOGOUT";
+
 
 
 // First we defined some string constant that indicates the type of action being performed.
