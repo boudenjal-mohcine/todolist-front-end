@@ -9,7 +9,7 @@ import Home from "./components/home/HomeComponent";
 function App() {
   return (
     <>
-      <BrowserRouter>
+      {/* <BrowserRouter>
         <Routes>
           <Route path="/">
             <Route path="login" element={<LoginPage />} />
@@ -17,7 +17,8 @@ function App() {
             <Route path="home" element={<Home />} />
           </Route>
         </Routes>
-      </BrowserRouter>
+      </BrowserRouter> */}
+      <Home></Home>
     </>
   );
 }

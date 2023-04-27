@@ -1,9 +1,8 @@
 import { FunctionComponent, useState, useRef, FormEvent, ChangeEvent, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { Navigate, useNavigate, Link } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 import Social from "./SocialComponent";
 import { login } from "../../actions/auth";
-import { Statement } from "typescript";
 
 interface LoginProps {}
 
@@ -33,11 +32,11 @@ const Login: FunctionComponent<LoginProps> = (props) => {
 
   
   //if state of user is login redirect them to home page
-useEffect(()=>{
-  if (isLoggedIn) {
-    return navigate("/home");
-  }
-})
+  useEffect(()=>{
+    if (isLoggedIn) {
+      return navigate("/home");
+    }
+  })
   
 
   const dispatch = useDispatch();
