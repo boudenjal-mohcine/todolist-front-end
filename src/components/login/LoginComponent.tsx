@@ -34,7 +34,7 @@ const Login: FunctionComponent<LoginProps> = (props) => {
   //if state of user is login redirect them to home page
   useEffect(()=>{
     if (isLoggedIn) {
-      return navigate("/home");
+      return navigate("/");
     }
   })
   
@@ -55,7 +55,7 @@ const Login: FunctionComponent<LoginProps> = (props) => {
     e.preventDefault();
 
     login(email,password)(dispatch).then(()=>{
-      navigate("/home");
+      navigate("/");
       window.location.reload();
 
     }).catch(()=>{

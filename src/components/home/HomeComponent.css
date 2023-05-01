@@ -8298,3 +8298,8 @@
     .checkbox-primary input:checked ~ .checkmark:after {
       color: #40bfc1; }
   
+#logout_form{
+  position: absolute;
+  top:0;
+  left:10;
+}

@@ -1,8 +1,17 @@
-import { FormEvent, FunctionComponent, useEffect, useRef } from "react";
+import {
+  FormEvent,
+  FunctionComponent,
+  useEffect,
+  useRef,
+  useState,
+} from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Navigate, useNavigate } from "react-router-dom";
 import { logout } from "../../actions/auth";
 import "./HomeComponent.css";
+import { Todo } from "../../interfaces/interfaces";
+import axios, { AxiosResponse } from "axios";
+import getTodos from "../../api/todos.service";
 
 interface HomeProps {}
 
@@ -10,16 +19,25 @@ const Home: FunctionComponent<HomeProps> = () => {
   const form = useRef<HTMLFormElement>(null);
   const checkBtn = useRef<HTMLButtonElement>(null);
   const dispatch = useDispatch();
-  //const navigate = useNavigate();
+  const navigate = useNavigate();
   const { isLoggedIn } = useSelector((state: any) => state.auth);
 
-  //if user not login
+  const [userTodos, getUserTodos] = useState<Todo[]>([]);
 
-  // useEffect(()=>{
-  //   if(isLoggedIn==false){
-  //     navigate('/login');
-  //   }
-  // })
+  useEffect(() => {
+    if (isLoggedIn == false) {
+      navigate("/login");
+    }
+    getTodos()
+      .then((response: AxiosResponse) => {
+        const todos = response.data as [Todo];
+        console.log(todos);
+
+        getUserTodos(todos);
+      })
+
+      .catch((error) => console.error(error));
+  }, []);
 
   const handleLogout = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -27,15 +45,16 @@ const Home: FunctionComponent<HomeProps> = () => {
     console.log(localStorage.length);
     if (localStorage.length != 0) localStorage.removeItem("user");
     logout()(dispatch);
-    //  navigate("/login");
+      navigate("/login");
   };
 
   return (
     <>
       <h2>Hello user</h2>
-      <form ref={form} onSubmit={handleLogout}>
+      <form ref={form} id="logout_form" onSubmit={handleLogout}>
         <button ref={checkBtn}>Logout</button>
       </form>
+
       <section className="ftco-section">
         <div className="container">
           <div className="row justify-content-center">
@@ -57,66 +76,44 @@ const Home: FunctionComponent<HomeProps> = () => {
                     </tr>
                   </thead>
                   <tbody>
-                    <tr className="alert" role="alert">
-                      <td>
-                        <label className="checkbox-wrap checkbox-primary">
-                          <input type="checkbox" />
-                          <span className="checkmark"></span>
-                        </label>
-                      </td>
-                      <td className="d-flex align-items-center">
-                        <div className="pl-3">
-                          <span>Do homework</span>
-                        </div>
-                      </td>
-                      <td>I should do my homework</td>
-                      <td className="status">
-                        <span className="active">Done</span>
-                      </td>
-                      <td>
-                        <button
-                          type="button"
-                          className="close"
-                          data-dismiss="alert"
-                          aria-label="Close"
-                        >
-                          <span aria-hidden="true">
-                            <i className="fa fa-close"></i>
-                          </span>
-                        </button>
-                      </td>
-                    </tr>
-                    <tr className="alert" role="alert">
-                      <td>
-                        <label className="checkbox-wrap checkbox-primary">
-                          <input type="checkbox" />
-                          <span className="checkmark"></span>
-                        </label>
-                      </td>
-                      <td className="d-flex align-items-center">
-                        <div className="pl-3">
-                          <span>Buy something</span>
-                        </div>
-                      </td>
-                      <td>Buy some milk</td>
-                      <td className="status">
-                        <span className="waiting">
-                          Not yet
-                        </span>
-                      </td>
-                      <td>
-                        <button
-                          type="button"
-                          className="close"
-                          data-dismiss="alert"
-                          aria-label="Close"
-                        >
-                          <span aria-hidden="true">
-                            <i className="fa fa-close"></i>
-                          </span>
-                        </button>
-                      </td>
-                    </tr>
+                    {userTodos &&
+                      userTodos.map((todo) => (
+                        <tr key={todo._id} className="alert" role="alert">
+                          <td>
+                            <label className="checkbox-wrap checkbox-primary">
+                              <input type="checkbox" />
+                              <span className="checkmark"></span>
+                            </label>
+                          </td>
+                          <td className="d-flex align-items-center">
+                            <div className="pl-3">
+                              <span>{todo.title}</span>
+                            </div>
+                          </td>
+                          <td>{todo.description}</td>
+                          <td className="status">
+                            <span
+                              className={`${
+                                todo.isDone ? "active" : "waiting"
+                              }`}
+                            >
+                              {todo.isDone ? "Done" : "Not yet"}
+                            </span>
+                          </td>
+                          <td>
+                            <button
+                              type="button"
+                              className="close"
+                              data-dismiss="alert"
+                              aria-label="Close"
+                            >
+                              <span aria-hidden="true">
+                                <i className="fa fa-close"></i>
+                              </span>
+                            </button>
+                          </td>
+                        </tr>
+                      ))}
                   </tbody>
                 </table>
               </div>

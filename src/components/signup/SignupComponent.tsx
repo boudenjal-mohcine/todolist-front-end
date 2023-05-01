@@ -23,7 +23,7 @@ const Signup: FunctionComponent<SignupProps> = () => {
 
     //if state of user is login redirect them to home page
     if (isLoggedIn) {
-      return <Navigate to="/home" />;
+      return <Navigate to="/" />;
     }
 
     const dispatch = useDispatch();
