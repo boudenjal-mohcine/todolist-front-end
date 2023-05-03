@@ -11,7 +11,7 @@ import { logout } from "../../actions/auth";
 import "./HomeComponent.css";
 import { Todo } from "../../interfaces/interfaces";
 import axios, { AxiosResponse } from "axios";
-import getTodos from "../../api/todos.service";
+import { getTodos, deleteTodo } from "../../api/todos.service";
 
 interface HomeProps {}
 
@@ -29,14 +29,13 @@ const Home: FunctionComponent<HomeProps> = () => {
       navigate("/login");
     }
     getTodos()
-      .then((response: AxiosResponse) => {
-        const todos = response.data as [Todo];
+      .then((response: AxiosResponse<any>) => {
+        const todos = response.data as Todo[];
         console.log(todos);
 
         getUserTodos(todos);
       })
-
-      .catch((error) => console.error(error));
+      .catch((error: string) => console.error(error));
   }, []);
 
   const handleLogout = (e: FormEvent<HTMLFormElement>) => {
@@ -45,7 +44,17 @@ const Home: FunctionComponent<HomeProps> = () => {
     console.log(localStorage.length);
     if (localStorage.length != 0) localStorage.removeItem("user");
     logout()(dispatch);
-      navigate("/login");
+    navigate("/login");
+  };
+
+  //delete todo
+  const deleteTodoHandler = (todo: Todo) => {
+    deleteTodo(todo._id)
+      .then(() => {
+        const updatedUserTodos = userTodos.filter((t) => t._id !== todo._id);
+        getUserTodos(updatedUserTodos);
+      })
+      .catch((error: string) => console.error(error));
   };
 
   return (
@@ -104,8 +113,7 @@ const Home: FunctionComponent<HomeProps> = () => {
                             <button
                               type="button"
                               className="close"
-                              data-dismiss="alert"
-                              aria-label="Close"
+                              onClick={() => deleteTodoHandler(todo)}
                             >
                               <span aria-hidden="true">
                                 <i className="fa fa-close"></i>

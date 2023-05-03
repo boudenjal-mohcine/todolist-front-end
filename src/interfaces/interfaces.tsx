@@ -5,5 +5,4 @@ export interface Todo {
     description: string;
     isDone: boolean;
     __v?: number;
-  }
-  
+}
