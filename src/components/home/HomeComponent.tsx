@@ -12,6 +12,7 @@ import "./HomeComponent.css";
 import { Todo } from "../../interfaces/interfaces";
 import axios, { AxiosResponse } from "axios";
 import { getTodos, deleteTodo } from "../../api/todos.service";
+import TodoElement from "./TodoElement";
 
 interface HomeProps {}
 
@@ -87,35 +88,15 @@ const Home: FunctionComponent<HomeProps> = () => {
                   <tbody>
                     {userTodos &&
                       userTodos.map((todo) => (
-                        <tr key={todo._id} className="alert" role="alert">
-                          <td>
-                            <label className="checkbox-wrap checkbox-primary">
-                              <input type="checkbox" />
-                              <span className="checkmark"></span>
-                            </label>
-                          </td>
-                          <td className="d-flex align-items-center">
-                            <div className="pl-3">
-                              <span>{todo.title}</span>
-                            </div>
-                          </td>
-                          <td>{todo.description}</td>
-                          <td className="status">
-                            <span
-                              className={`${
-                                todo.isDone ? "active" : "waiting"
-                              }`}
-                            >
-                              {todo.isDone ? "Done" : "Not yet"}
-                            </span>
-                          </td>
-                          <td>
-                            <button
+                       <tr key={todo._id} className="alert" role="alert">
+                        <TodoElement key={todo._id} {...todo}></TodoElement> 
+                        <td>
+                          <button
                               type="button"
                               className="close"
                               onClick={() => deleteTodoHandler(todo)}
                             >
-                              <span aria-hidden="true">
+                             <span aria-hidden="true">
                                 <i className="fa fa-close"></i>
                               </span>
                             </button>
